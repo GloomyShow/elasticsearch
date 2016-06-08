@@ -56,7 +56,7 @@ final class Bootstrap {
     private static volatile Bootstrap INSTANCE;
 
     private volatile Node node;
-    private final CountDownLatch keepAliveLatch = new CountDownLatch(1);
+    private final CountDownLatch keepAliveLatch = new CountDownLatch(1); //
     private final Thread keepAliveThread;
 
     /** creates a new instance */
@@ -65,7 +65,7 @@ final class Bootstrap {
             @Override
             public void run() {
                 try {
-                    keepAliveLatch.await();
+                    keepAliveLatch.await(); //
                 } catch (InterruptedException e) {
                     // bail out
                 }
@@ -218,11 +218,17 @@ final class Bootstrap {
     /**
      * This method is invoked by {@link Elasticsearch#main(String[])}
      * to startup elasticsearch.
+     * elasticsearch启动类
+     *
      */
     static void init(String[] args) throws Throwable {
         // Set the system property before anything has a chance to trigger its use
         System.setProperty("es.logger.prefix", "");
 
+
+        /**
+         *
+         */
         BootstrapCLIParser bootstrapCLIParser = new BootstrapCLIParser();
         CliTool.ExitStatus status = bootstrapCLIParser.execute(args);
 

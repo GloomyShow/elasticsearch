@@ -126,8 +126,8 @@
         <tests.security.manager>true</tests.security.manager>
         <tests.compatibility></tests.compatibility>
         <tests.ifNoTests>fail</tests.ifNoTests>
-        <skip.unit.tests>${skipTests}</skip.unit.tests>
-        <skip.integ.tests>${skipTests}</skip.integ.tests>
+      <!--  <skip.unit.tests>${skipTests}</skip.unit.tests>
+        <skip.integ.tests>${skipTests}</skip.integ.tests>-->
         <integ.scratch>${project.build.directory}/integ tests</integ.scratch>
         <integ.deps>${project.build.directory}/integ deps</integ.deps>
         <integ.temp>${integ.scratch}/temp</integ.temp>
@@ -149,11 +149,11 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
-        <repository>
-            <id>oss-snapshots</id>
-            <name>Sonatype OSS Snapshots</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </repository>
+        <!--<repository>-->
+            <!--<id>oss-snapshots</id>-->
+            <!--<name>Sonatype OSS Snapshots</name>-->
+            <!--<url>https://oss.sonatype.org/content/repositories/snapshots/</url>-->
+        <!--</repository>-->
         <!--
         <repository>
             <id>Lucene snapshots</id>
@@ -519,7 +519,7 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-antrun-plugin</artifactId>
                 </plugin>
-                <plugin>
+                <!--<plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>2.10.3</version>
@@ -536,7 +536,7 @@
                             </configuration>
                         </execution>
                     </executions>
-                </plugin>
+                </plugin>-->
             </plugins>
         <pluginManagement>
             <plugins>
@@ -655,7 +655,7 @@
                             <disable package="${tests.assertion.disabled}"/>
                             <!-- pass org.elasticsearch to run without assertions -->
                         </assertions>
-                        <jvmArgs>
+                       <!-- <jvmArgs>
                             <param>-Xmx${tests.heap.size}</param>
                             <param>-Xms${tests.heap.size}</param>
                             <param>${java.permGenSpace}</param>
@@ -663,7 +663,7 @@
                             <param>-Des.logger.prefix=</param>
                             <param>-XX:+HeapDumpOnOutOfMemoryError</param>
                             <param>-XX:HeapDumpPath=${tests.heapdump.path}</param>
-                        </jvmArgs>
+                        </jvmArgs>-->
                         <shuffleOnSlave>${tests.shuffle}</shuffleOnSlave>
                         <sysouts>${tests.verbose}</sysouts>
                         <seed>${tests.seed}</seed>
@@ -684,20 +684,20 @@
                             <!-- needed to know which project we are in for plugin permissions -->
                             <tests.artifact>${project.artifactId}</tests.artifact>
                             <tests.maxfailures>${tests.maxfailures}</tests.maxfailures>
-                            <tests.failfast>${tests.failfast}</tests.failfast>
+                         <!--   <tests.failfast>${tests.failfast}</tests.failfast>-->
                             <tests.class>${tests.class}</tests.class>
                             <tests.method>${tests.method}</tests.method>
                             <tests.nightly>${tests.nightly}</tests.nightly>
                             <tests.verbose>${tests.verbose}</tests.verbose>
                             <tests.badapples>${tests.badapples}</tests.badapples>
                             <tests.weekly>${tests.weekly}</tests.weekly>
-                            <haltOnFailure>${tests.failfast}</haltOnFailure>
+                          <!--  <haltOnFailure>${tests.failfast}</haltOnFailure>-->
                             <tests.awaitsfix>${tests.awaitsfix}</tests.awaitsfix>
                             <tests.timeoutSuite>${tests.timeoutSuite}</tests.timeoutSuite>
                             <tests.showSuccess>${tests.showSuccess}</tests.showSuccess>
                             <tests.thirdparty>${tests.thirdparty}</tests.thirdparty>
                             <tests.config>${tests.config}</tests.config>
-                            <tests.coverage>${tests.coverage}</tests.coverage>
+                           <!-- <tests.coverage>${tests.coverage}</tests.coverage>-->
                             <tests.coverage.dir>${project.build.directory}</tests.coverage.dir>
                             <tests.client.ratio>${tests.client.ratio}</tests.client.ratio>
                             <tests.enable_mock_modules>${tests.enable_mock_modules}</tests.enable_mock_modules>
@@ -714,7 +714,7 @@
                             <tests.rest.load_packaged>${tests.rest.load_packaged}</tests.rest.load_packaged>
                             <tests.timezone>${tests.timezone}</tests.timezone>
                             <es.node.local>${env.ES_TEST_LOCAL}</es.node.local>
-                            <es.node.mode>${es.node.mode}</es.node.mode>
+                           <!-- <es.node.mode>${es.node.mode}</es.node.mode>-->
                             <es.logger.level>${es.logger.level}</es.logger.level>
                             <tests.security.manager>${tests.security.manager}</tests.security.manager>
                             <tests.compatibility>${tests.compatibility}</tests.compatibility>
@@ -920,7 +920,7 @@
                                           <signaturesFile>${elasticsearch.tools.directory}/forbidden/all-signatures.txt</signaturesFile>
                                           <signaturesFile>${elasticsearch.tools.directory}/forbidden/third-party-signatures.txt</signaturesFile>
                                      </signaturesFiles>
-                                     <signatures>${forbidden.signatures}</signatures>
+                                   <!--  <signatures>${forbidden.signatures}</signatures>-->
                                      <suppressAnnotations><annotation>**.SuppressForbidden</annotation></suppressAnnotations>
                                  </configuration>
                              <phase>compile</phase>
@@ -945,7 +945,7 @@
                                      <signaturesFile>${elasticsearch.tools.directory}/forbidden/test-signatures.txt</signaturesFile>
                                      <signaturesFile>${elasticsearch.tools.directory}/forbidden/all-signatures.txt</signaturesFile>
                                  </signaturesFiles>
-                                 <signatures>${forbidden.test.signatures}</signatures>
+                                <!-- <signatures>${forbidden.test.signatures}</signatures>-->
                                  <suppressAnnotations><annotation>**.SuppressForbidden</annotation></suppressAnnotations>
                              </configuration>
                              <phase>test-compile</phase>
@@ -1023,7 +1023,7 @@
                                 <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             </manifest>
                             <manifestEntries>
-                                <X-Build-Branch>${scmBranch}</X-Build-Branch>
+                              <!--  <X-Build-Branch>${scmBranch}</X-Build-Branch>-->
                                 <X-Build-Number>${buildNumber}</X-Build-Number>
                                 <X-Build-Time>${timestamp}</X-Build-Time>
                                 <X-Compile-Elasticsearch-Version>${elasticsearch.version}</X-Compile-Elasticsearch-Version>
@@ -1109,7 +1109,7 @@ org.eclipse.jdt.core.formatter.tabulation.size=4
 ]]>
                                 </content>
                             </file>
-                            <file>
+                            <!--<file>
                                 <name>.settings/org.eclipse.jdt.ui.prefs</name>
                                 <content>
                                <![CDATA[eclipse.preferences.version=1
@@ -1120,7 +1120,7 @@ org.eclipse.jdt.ui.importorder=;com;org;java;javax;\#;
 org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates><template autoinsert\="false" context\="gettercomment_context" deleted\="false" description\="Comment for getter method" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.gettercomment" name\="gettercomment">/**\n *\n */</template><template autoinsert\="false" context\="settercomment_context" deleted\="false" description\="Comment for setter method" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.settercomment" name\="settercomment">/**\n *\n */</template><template autoinsert\="true" context\="constructorcomment_context" deleted\="false" description\="Comment for created constructors" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.constructorcomment" name\="constructorcomment">/**\n * ${tags}\n */</template><template autoinsert\="true" context\="filecomment_context" deleted\="false" description\="Comment for created Java files" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.filecomment" name\="filecomment">/**\n *\n */</template><template autoinsert\="false" context\="typecomment_context" deleted\="false" description\="Comment for created types" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.typecomment" name\="typecomment">/**\n *\n */</template><template autoinsert\="true" context\="fieldcomment_context" deleted\="false" description\="Comment for fields" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.fieldcomment" name\="fieldcomment">/**\n *\n */</template><template autoinsert\="true" context\="methodcomment_context" deleted\="false" description\="Comment for non-overriding methods" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.methodcomment" name\="methodcomment">/**\n * ${tags}\n */</template><template autoinsert\="false" context\="overridecomment_context" deleted\="false" description\="Comment for overriding methods" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.overridecomment" name\="overridecomment">/*\n *\n */</template><template autoinsert\="true" context\="delegatecomment_context" deleted\="false" description\="Comment for delegate methods" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.delegatecomment" name\="delegatecomment">/**\n * ${tags}\n * ${see_to_target}\n */</template><template autoinsert\="false" context\="newtype_context" deleted\="false" description\="Newly created files" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.newtype" name\="newtype">${filecomment}\n/*\n * Licensed to Elasticsearch under one or more contributor\n * license agreements. See the NOTICE file distributed with\n * this work for additional information regarding copyright\n * ownership. Elasticsearch licenses this file to you under\n * the Apache License, Version 2.0 (the "License"); you may\n * not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *    http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing,\n * software distributed under the License is distributed on an\n * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY\n * KIND, either express or implied.  See the License for the\n * specific language governing permissions and limitations\n * under the License.\n */\n\n${package_declaration}\n\n${typecomment}\n${type_declaration}</template><template autoinsert\="true" context\="classbody_context" deleted\="false" description\="Code in new class type bodies" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.classbody" name\="classbody">\n</template><template autoinsert\="true" context\="interfacebody_context" deleted\="false" description\="Code in new interface type bodies" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.interfacebody" name\="interfacebody">\n</template><template autoinsert\="true" context\="enumbody_context" deleted\="false" description\="Code in new enum type bodies" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.enumbody" name\="enumbody">\n</template><template autoinsert\="true" context\="annotationbody_context" deleted\="false" description\="Code in new annotation type bodies" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.annotationbody" name\="annotationbody">\n</template><template autoinsert\="false" context\="catchblock_context" deleted\="false" description\="Code in new catch blocks" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.catchblock" name\="catchblock">throw new RuntimeException();</template><template autoinsert\="false" context\="methodbody_context" deleted\="false" description\="Code in created method stubs" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.methodbody" name\="methodbody">${body_statement}</template><template autoinsert\="false" context\="constructorbody_context" deleted\="false" description\="Code in created constructor stubs" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.constructorbody" name\="constructorbody">${body_statement}</template><template autoinsert\="true" context\="getterbody_context" deleted\="false" description\="Code in created getters" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.getterbody" name\="getterbody">return ${field};</template><template autoinsert\="true" context\="setterbody_context" deleted\="false" description\="Code in created setters" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.setterbody" name\="setterbody">${field} \= ${param};</template></templates>
 ]]>
                                 </content>
-                            </file>
+                            </file>-->
                         </additionalConfig>
                     </configuration>
                 </plugin>
@@ -1207,7 +1207,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
                             <goals>
                                 <goal>run</goal>
                             </goals>
-                            <configuration>
+                           <!-- <configuration>
                                 <target unless="${validate.skip}">
                                     <pathconvert pathsep="${line.separator}" dirsep="/" property="validate.patternsFound" setonempty="false">
                                         <fileset dir="${basedir}">
@@ -1234,7 +1234,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
                                         nocommits:${line.separator}${validate.patternsFound}
                                     </fail>
                                 </target>
-                            </configuration>
+                            </configuration>-->
                         </execution>
                         <execution>
                             <phase>generate-test-resources</phase>
@@ -1341,7 +1341,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
         </pluginManagement>
     </build>
     <profiles>
-        <profile>
+        <!--<profile>
             <id>default</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -1354,7 +1354,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
                    </plugin>
                 </plugins>
             </build>
-        </profile>
+        </profile>-->
         <profile>
             <id>release</id>
             <properties>
@@ -1364,7 +1364,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
             </properties>
             <build>
                 <!-- sign the artifacts with GPG -->
-                <plugins>
+               <!-- <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
@@ -1384,7 +1384,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
                             </execution>
                         </executions>
                     </plugin>
-                </plugins>
+                </plugins>-->
             </build>
         </profile>
         <!-- license profile, to generate third party license file -->
@@ -1450,7 +1450,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
                             </execution>
                         </executions>
                     </plugin>
-                    <plugin>
+                    <!--<plugin>
                         <groupId>com.mycila</groupId>
                         <artifactId>license-maven-plugin</artifactId>
                         <executions>
@@ -1459,7 +1459,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
                                 <phase>none</phase>
                             </execution>
                         </executions>
-                    </plugin>
+                    </plugin>-->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-antrun-plugin</artifactId>
@@ -1496,7 +1496,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
             </build>
         </profile>
         <!-- static analysis -->
-        <profile>
+     <!--   <profile>
             <id>static</id>
             <activation>
                 <property>
@@ -1505,7 +1505,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
                 </property>
             </activation>
             <properties>
-                <tests.security.manager>false</tests.security.manager> <!-- security policy doesn't have appropriate permissions for instrumentation -->
+                <tests.security.manager>false</tests.security.manager> &lt;!&ndash; security policy doesn't have appropriate permissions for instrumentation &ndash;&gt;
             </properties>
             <build>
                 <plugins>
@@ -1543,7 +1543,7 @@ org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UT
                     </plugin>
                 </plugins>
             </reporting>
-        </profile>
+        </profile>-->
     </profiles>
     <modules>
         <module>dev-tools</module>

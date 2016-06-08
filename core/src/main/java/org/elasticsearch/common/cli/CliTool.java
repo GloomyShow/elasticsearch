@@ -35,38 +35,105 @@ import static org.elasticsearch.common.settings.Settings.Builder.EMPTY_SETTINGS;
 
 /**
  * A base class for command-line interface tool.
+ * 命令行工具类接口
  *
  * Two modes are supported:
+ * 支持两种模式
  *
  * - Single command mode. The tool exposes a single command that can potentially accept arguments (eg. CLI options).
+ * - 单命令模式:该工具暴露了一个单独的命令可以潜在的接收参数(例如 CLI命令行 界面)
  * - Multi command mode. The tool support multiple commands, each for different tasks, each potentially accepts arguments.
+ * - 多命令模式:该工具支持多个命令,对于每一个不同的任务,都可以接收参数.
  *
  * In a multi-command mode. The first argument must be the command name. For example, the plugin manager
  * can be seen as a multi-command tool with two possible commands: install and uninstall
+ *
+ * 在一个多命令模式中.第一个参数必须是命令名称.例如,插件管理工具可以被看做一个有两个可能的命令的多命令模式工具:安装和卸载.
+ *
  *
  * The tool is configured using a {@link CliToolConfig} which encapsulates the tool's commands and their
  * potential options. The tool also comes with out of the box simple help support (the -h/--help option is
  * automatically handled) where the help text is configured in a dedicated *.help files located in the same package
  * as the tool.
+ * 该工具是使用CliToolConfig ,用来封装工具的命令和她们潜在的选项.该工具还附带了开箱即用的简单帮助支持(使用-h/--help 选项),其中
+ * 帮助文档是使用一个专用的.help文件位于该工具的同一个包中.
+ *
+ *
  */
 public abstract class CliTool {
 
     // based on sysexits.h
+
+    /**
+     * 退出的状态码
+     */
     public static enum ExitStatus {
-        OK(0),
-        OK_AND_EXIT(0),
-        USAGE(64),          /* command line usage error */
+        OK(0), //成功 0
+        OK_AND_EXIT(0), // 成功并退出 0
+
+        /**
+         * 命令行出错 64
+         */
+        USAGE(64), /* command line usage error */
+
+        /**
+         * 日期格式化出错 65
+         */
         DATA_ERROR(65),     /* data format error */
+
+        /**
+         * 无法打开输入 66
+         */
         NO_INPUT(66),       /* cannot open input */
+
+        /**
+         * 位置地址 67
+         */
         NO_USER(67),        /* addressee unknown */
+
+        /**
+         * 未知主机名 68
+         */
         NO_HOST(68),        /* host name unknown */
+
+        /**
+         * 服务不可以用 69
+         */
         UNAVAILABLE(69),    /* service unavailable */
+
+        /**
+         * 内部软件出错 70
+         */
         CODE_ERROR(70),     /* internal software error */
+
+        /**
+         * 不能创建输出文件 73
+         */
         CANT_CREATE(73),    /* can't create (user) output file */
+
+        /**
+         * IO错误 74
+         */
         IO_ERROR(74),       /* input/output error */
+
+        /**
+         * 临时故障,用户被邀请重试 75
+         */
         TEMP_FAILURE(75),   /* temp failure; user is invited to retry */
+
+        /**
+         * 远程网络协议出错 76
+         */
         PROTOCOL(76),       /* remote error in protocol */
+
+        /**
+         * 没有权限 77
+         */
         NOPERM(77),         /* permission denied */
+
+        /**
+         * 配置出错
+         */
         CONFIG(78);          /* configuration error */
 
         final int status;

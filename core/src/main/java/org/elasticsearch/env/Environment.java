@@ -40,7 +40,7 @@ import static org.elasticsearch.common.Strings.cleanPath;
  * The environment of where things exists.
  */
 @SuppressForbidden(reason = "configures paths for the system")
-// TODO: move PathUtils to be package-private here instead of 
+// TODO: move PathUtils to be package-private here instead of
 // public+forbidden api!
 public class Environment {
 
@@ -63,32 +63,38 @@ public class Environment {
     private final Path sharedDataFile;
 
     /** location of bin/, used by plugin manager */
-    private final Path binFile;
+    private final Path binFile; //bin所在位置,被插件管理使用
 
     /** location of lib/, */
-    private final Path libFile;
+    private final Path libFile;//lib所在位置
 
-    private final Path logsFile;
+    private final Path logsFile;//日志文件所在位置
 
     /** Path to the PID file (can be null if no PID file is configured) **/
-    private final Path pidFile;
-    
+    private final Path pidFile; //pid文件所在位置,可以为空,如果PID文件没有配置
+
     /** Path to the temporary file directory used by the JDK */
-    private final Path tmpFile = PathUtils.get(System.getProperty("java.io.tmpdir"));
+    private final Path tmpFile = PathUtils.get(System.getProperty("java.io.tmpdir"));//被JDK使用的临时文件目录
+
 
     /** List of filestores on the system */
-    private static final FileStore[] fileStores;
+    private static final FileStore[] fileStores;//系统中文件存储
 
     /**
      * We have to do this in clinit instead of init, because ES code is pretty messy,
      * and makes these environments, throws them away, makes them again, etc.
+     *
+     * 在cli命令行界面初始化的时候运行这些代码,而不是在整个初始化的时候,因为ES代码十分混乱,
+     * 创建这些环境,丢弃他们,然后重新创建等等.
      */
     static {
         // gather information about filesystems
         ArrayList<FileStore> allStores = new ArrayList<>();
+
         for (FileStore store : PathUtils.getDefaultFileSystem().getFileStores()) {
             allStores.add(new ESFileStore(store));
         }
+
         fileStores = allStores.toArray(new ESFileStore[allStores.size()]);
     }
 
@@ -292,7 +298,7 @@ public class Environment {
     public Path pidFile() {
         return pidFile;
     }
-    
+
     /** Path to the default temp directory used by the JDK */
     public Path tmpFile() {
         return tmpFile;
@@ -317,7 +323,7 @@ public class Environment {
     public static FileStore getFileStore(Path path) throws IOException {
         return ESFileStore.getMatchingFileStore(path, fileStores);
     }
-    
+
     /**
      * Returns true if the path is writable.
      * Acts just like {@link Files#isWritable(Path)}, except won't

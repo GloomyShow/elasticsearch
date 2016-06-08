@@ -26,7 +26,7 @@ import java.io.*;
 import java.util.Locale;
 
 /**
-*
+* 终端类,用来打印各种日志
 */
 @SuppressForbidden(reason = "System#out")
 public abstract class Terminal {
@@ -130,7 +130,12 @@ public abstract class Terminal {
 
     public abstract PrintWriter writer();
 
+
+    /**
+     * 控制台终端
+     */
     private static class ConsoleTerminal extends Terminal {
+
 
         final Console console = System.console();
 
@@ -165,6 +170,10 @@ public abstract class Terminal {
         }
     }
 
+
+    /**
+     * 系统终端
+     */
     @SuppressForbidden(reason = "System#out")
     private static class SystemTerminal extends Terminal {
 
