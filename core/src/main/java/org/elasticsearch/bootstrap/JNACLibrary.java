@@ -32,6 +32,8 @@ import java.util.List;
 
 /**
  * java mapping to some libc functions
+ * java到一些libc函数的映射
+ *
  */
 final class JNACLibrary {
 
@@ -53,21 +55,21 @@ final class JNACLibrary {
     static native int mlockall(int flags);
 
     static native int geteuid();
-    
+
     /** corresponds to struct rlimit */
     public static final class Rlimit extends Structure implements Structure.ByReference {
         public NativeLong rlim_cur = new NativeLong(0);
         public NativeLong rlim_max = new NativeLong(0);
-        
+
         @Override
         protected List<String> getFieldOrder() {
             return Arrays.asList(new String[] { "rlim_cur", "rlim_max" });
         }
     }
-    
+
     static native int getrlimit(int resource, Rlimit rlimit);
     static native int setrlimit(int resource, Rlimit rlimit);
-    
+
     static native String strerror(int errno);
 
     private JNACLibrary() {

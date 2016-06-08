@@ -70,6 +70,9 @@ public class InternalSettingsPreparer {
      * and then replacing all property placeholders. If a {@link Terminal} is provided and configuration settings are loaded,
      * settings with a value of <code>${prompt.text}</code> or <code>${prompt.secret}</code> will result in a prompt for
      * the setting to the user.
+     *
+     * 准备好设置,通过手机所有elasticsearch系统属性,可选加载配置,然后通过占位符替换.如果终端已经提供,并且配置已经加载好,设置提示语可以给用户产生一个提示.
+     *
      * @param input The custom settings to use. These are not overwritten by settings in the configuration file.
      * @param terminal the Terminal to use for input/output
      * @return the {@link Settings} and {@link Environment} as a {@link Tuple}
@@ -77,10 +80,13 @@ public class InternalSettingsPreparer {
     public static Environment prepareEnvironment(Settings input, Terminal terminal) {
         // just create enough settings to build the environment, to get the config dir
         Settings.Builder output = settingsBuilder();
+
+        //初始化配置
         initializeSettings(output, input, true);
         Environment environment = new Environment(output.build());
         boolean settingsFileFound = false;
         Set<String> foundSuffixes = new HashSet<>();
+        //加载elasticsearch配置文件,文件后缀可以为yaml,json,properties,yml
         for (String allowedSuffix : ALLOWED_SUFFIXES) {
             Path path = environment.configFile().resolve("elasticsearch" + allowedSuffix);
             if (Files.exists(path)) {
@@ -108,6 +114,11 @@ public class InternalSettingsPreparer {
         return new Environment(output.build());
     }
 
+    /**
+     * 使用系统配置,默认为false
+     * @param input
+     * @return
+     */
     private static boolean useSystemProperties(Settings input) {
         return !input.getAsBoolean(IGNORE_SYSTEM_PROPERTIES_SETTING, false);
     }
@@ -115,11 +126,14 @@ public class InternalSettingsPreparer {
     /**
      * Initializes the builder with the given input settings, and loads system properties settings if allowed.
      * If loadDefaults is true, system property default settings are loaded.
+     *
+     * 初始化构建器使用提供的输入设置,加载系统属性设置如果允许的话.
+     * 如果loadDefaults 是 true,系统该属性默认设置为加载.
      */
     private static void initializeSettings(Settings.Builder output, Settings input, boolean loadDefaults) {
         output.put(input);
-        if (useSystemProperties(input)) {
-            if (loadDefaults) {
+        if (useSystemProperties(input)) {//是否使用系统配置
+            if (loadDefaults) {//使用默认配置
                 for (String prefix : PROPERTY_DEFAULTS_PREFIXES) {
                     output.putProperties(prefix, System.getProperties());
                 }
@@ -128,13 +142,19 @@ public class InternalSettingsPreparer {
                 output.putProperties(prefix, System.getProperties(), PROPERTY_DEFAULTS_PREFIXES);
             }
         }
-        output.replacePropertyPlaceholders();
+        output.replacePropertyPlaceholders();//否则使用占位符替换的值
     }
 
     /**
      * Finish preparing settings by replacing forced settings, prompts, and any defaults that need to be added.
      * The provided terminal is used to prompt for settings needing to be replaced.
      * The provided configDir is optional and will be used to lookup names.txt if the node name is not set, if provided.
+     *
+     *
+     * 结束准备设置,通过替换强制设置,提示,和任何需要添加的默认值.
+     * 提供的终端用来提示设置需要被替换
+     * 提供的configDir是可选的,并且将用来寻找names.txt,如果节点名称没有被设置,如果提供的话.
+     *
      */
     private static void finalizeSettings(Settings.Builder output, Terminal terminal, Path configDir) {
         // allow to force set properties based on configuration of the settings provided

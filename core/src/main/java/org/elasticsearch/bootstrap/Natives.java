@@ -37,6 +37,9 @@ final class Natives {
     // marker to determine if the JNA class files are available to the JVM
     static final boolean JNA_AVAILABLE;
 
+    /**
+     * 获取jna.Native类
+     */
     static {
         boolean v = false;
         try {
@@ -90,7 +93,7 @@ final class Natives {
         }
         return JNANatives.LOCAL_MLOCKALL;
     }
-    
+
     static void trySeccomp(Path tmpFile) {
         if (!JNA_AVAILABLE) {
             logger.warn("cannot install syscall filters because JNA is not available");
@@ -98,7 +101,7 @@ final class Natives {
         }
         JNANatives.trySeccomp(tmpFile);
     }
-    
+
     static boolean isSeccompInstalled() {
         if (!JNA_AVAILABLE) {
             return false;

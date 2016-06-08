@@ -34,6 +34,11 @@ import static org.elasticsearch.bootstrap.JNAKernel32Library.SizeT;
 /**
  * This class performs the actual work with JNA and library bindings to call native methods. It should only be used after
  * we are sure that the JNA classes are available to the JVM
+ *
+ *
+ * 该类演示了通过JNA进行实际工作,并且类绑定调用活跃的方法.仅仅可以用在我们确认JNA类在JVM中可用之后.
+ *
+ *
  */
 class JNANatives {
 
@@ -56,18 +61,18 @@ class JNANatives {
         boolean rlimitSuccess = false;
         long softLimit = 0;
         long hardLimit = 0;
-        
+
         try {
             int result = JNACLibrary.mlockall(JNACLibrary.MCL_CURRENT);
             if (result == 0) {
                 LOCAL_MLOCKALL = true;
                 return;
             }
-            
+
             errno = Native.getLastError();
             errMsg = JNACLibrary.strerror(errno);
             if (Constants.LINUX || Constants.MAC_OS_X) {
-                // we only know RLIMIT_MEMLOCK for these two at the moment. 
+                // we only know RLIMIT_MEMLOCK for these two at the moment.
                 JNACLibrary.Rlimit rlimit = new JNACLibrary.Rlimit();
                 if (JNACLibrary.getrlimit(JNACLibrary.RLIMIT_MEMLOCK, rlimit) == 0) {
                     rlimitSuccess = true;
@@ -103,7 +108,7 @@ class JNANatives {
             }
         }
     }
-    
+
     static String rlimitToString(long value) {
         assert Constants.LINUX || Constants.MAC_OS_X;
         if (value == JNACLibrary.RLIM_INFINITY) {

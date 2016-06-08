@@ -608,7 +608,7 @@ public class Strings {
                     result[res++] = builder.toString();
                     builder.setLength(0);
                 }
-                
+
             } else {
                 builder.append(s.charAt(i));
             }
@@ -934,33 +934,39 @@ public class Strings {
         }
     }
 
+    /**
+     * 转化为驼峰式类名
+     * @param value
+     * @return
+     */
     public static String toCamelCase(String value) {
         return toCamelCase(value, null);
     }
 
+    //将类名转化为驼峰类例如 _name => _name ,_first_name=> _firstName
     public static String toCamelCase(String value, StringBuilder sb) {
         boolean changed = false;
         for (int i = 0; i < value.length(); i++) {
             char c = value.charAt(i);
             //e.g. _name stays as-is, _first_name becomes _firstName
-            if (c == '_' && i > 0) {
-                if (!changed) {
+            if (c == '_' && i > 0) {//非首字母为下划线
+                if (!changed) {//string中含有下划线
                     if (sb != null) {
                         sb.setLength(0);
                     } else {
                         sb = new StringBuilder();
-                    }
+                    }//sb全部清零
                     // copy it over here
                     for (int j = 0; j < i; j++) {
-                        sb.append(value.charAt(j));
+                        sb.append(value.charAt(j));//sb为所有下划线之前的字母
                     }
                     changed = true;
                 }
-                if (i < value.length() - 1) {
-                    sb.append(Character.toUpperCase(value.charAt(++i)));
+                if (i < value.length() - 1) {//如果i不是最后一个
+                    sb.append(Character.toUpperCase(value.charAt(++i)));//大写下划线后的第一个字母
                 }
             } else {
-                if (changed) {
+                if (changed) {//sb添加字母,过滤掉非首字母的下划线
                     sb.append(c);
                 }
             }
@@ -970,6 +976,8 @@ public class Strings {
         }
         return sb.toString();
     }
+
+
 
     public static String toUnderscoreCase(String value) {
         return toUnderscoreCase(value, null);
@@ -1025,11 +1033,11 @@ public class Strings {
 
     private Strings() {
     }
-    
+
     public static byte[] toUTF8Bytes(CharSequence charSequence) {
         return toUTF8Bytes(charSequence, new BytesRefBuilder());
     }
-    
+
     public static byte[] toUTF8Bytes(CharSequence charSequence, BytesRefBuilder spare) {
         spare.copyChars(charSequence);
         return Arrays.copyOf(spare.bytes(), spare.length());
@@ -1143,4 +1151,17 @@ public class Strings {
         }
     }
 
+
+    public static void main(String[] args){
+
+        String value= toCamelCase("_first_name");
+
+        System.out.print(value);
+
+
+    }
+
 }
+
+
+

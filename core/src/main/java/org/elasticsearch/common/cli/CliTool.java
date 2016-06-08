@@ -168,21 +168,30 @@ public abstract class CliTool {
     }
 
     protected CliTool(CliToolConfig config, Terminal terminal) {
+        //如果cmd不存在,则报异常
         Preconditions.checkArgument(config.cmds().size() != 0, "At least one command must be configured");
         this.config = config;
         this.terminal = terminal;
+        //加载环境变量
         env = InternalSettingsPreparer.prepareEnvironment(EMPTY_SETTINGS, terminal);
         settings = env.settings();
     }
 
+
+    /**
+     *
+     * @param args
+     * @return
+     */
     public final ExitStatus execute(String... args) {
 
         // first lets see if the user requests tool help. We're doing it only if
         // this is a multi-command tool. If it's a single command tool, the -h/--help
         // option will be taken care of on the command level
         if (!config.isSingle() && args.length > 0 && (args[0].equals("-h") || args[0].equals("--help"))) {
-            config.printUsage(terminal);
-            return ExitStatus.OK_AND_EXIT;
+            //非单命令模式,并且args有只,并且为帮助选择
+            config.printUsage(terminal);//打印帮助类
+            return ExitStatus.OK_AND_EXIT;//返回OK并且退出的状态码
         }
 
         CliToolConfig.Cmd cmd;

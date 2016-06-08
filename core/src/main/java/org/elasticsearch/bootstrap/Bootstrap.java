@@ -60,6 +60,12 @@ final class Bootstrap {
     private final Thread keepAliveThread;
 
     /** creates a new instance */
+    /**
+     * 开启一个keepAliveThread进程,线程启动后处于等待状态.利用Runtime.getRuntime().addShutdownHook方法加入一个钩子,
+     * 在程序退出时触发该钩子.(ctrl+c或者kill -15),该钩子会对之前的线程做countDown操作.
+     *
+     * 线程的作用相当于一个心跳,用来表示ES进程是否还活着
+     */
     Bootstrap() {
         keepAliveThread = new Thread(new Runnable() {
             @Override
@@ -71,7 +77,7 @@ final class Bootstrap {
                 }
             }
         }, "elasticsearch[keepAlive/" + Version.CURRENT + "]");
-        keepAliveThread.setDaemon(false);
+        keepAliveThread.setDaemon(false);//设置为非守护进程
         // keep this thread alive (non daemon thread) until we shutdown
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
@@ -86,7 +92,7 @@ final class Bootstrap {
         final ESLogger logger = Loggers.getLogger(Bootstrap.class);
 
         // check if the user is running as root, and bail
-        if (Natives.definitelyRunningAsRoot()) {
+        if (Natives.definitelyRunningAsRoot()) {//不能用ROOT用户启动,否则强制关闭
             if (Boolean.parseBoolean(System.getProperty("es.insecure.allow.root"))) {
                 logger.warn("running as ROOT user. this is a bad idea!");
             } else {
@@ -226,17 +232,17 @@ final class Bootstrap {
         System.setProperty("es.logger.prefix", "");
 
 
-        /**
-         *
-         */
-        BootstrapCLIParser bootstrapCLIParser = new BootstrapCLIParser();
-        CliTool.ExitStatus status = bootstrapCLIParser.execute(args);
+        BootstrapCLIParser bootstrapCLIParser = new BootstrapCLIParser();//命令行界面实例
+        CliTool.ExitStatus status = bootstrapCLIParser.execute(args);//获取启动状态
 
+        //如果状态不是OK
         if (CliTool.ExitStatus.OK != status) {
             exit(status.status());
         }
 
+        //创建一个实例,启动一个keepAliveThread进程.
         INSTANCE = new Bootstrap();
+
 
         boolean foreground = !"false".equals(System.getProperty("es.foreground", System.getProperty("es-foreground")));
         // handle the wrapper system property, if its a service, don't run as a service
@@ -345,6 +351,10 @@ final class Bootstrap {
         }
     }
 
+    /**
+     * 退出系统
+     * @param status
+     */
     @SuppressForbidden(reason = "Allowed to exit explicitly in bootstrap phase")
     private static void exit(int status) {
         System.exit(status);

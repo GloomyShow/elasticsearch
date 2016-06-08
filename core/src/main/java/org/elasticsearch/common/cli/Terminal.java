@@ -33,6 +33,7 @@ public abstract class Terminal {
 
     public static final String DEBUG_SYSTEM_PROPERTY = "es.cli.debug";
 
+    // 支持控制台终端么? 支持则为控制台终端,不支持即为系统终端
     public static final Terminal DEFAULT = ConsoleTerminal.supported() ? new ConsoleTerminal() : new SystemTerminal();
 
     public static enum Verbosity {

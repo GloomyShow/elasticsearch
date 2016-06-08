@@ -33,20 +33,23 @@ import java.nio.file.attribute.FileAttributeView;
 import java.nio.file.attribute.FileStoreAttributeView;
 import java.util.Arrays;
 
-/** 
+/**
  * Implementation of FileStore that supports
  * additional features, such as SSD detection and better
  * filesystem information for the root filesystem.
  * @see Environment#getFileStore(Path)
+ *
+ * 继承Filestore,支持附加功能,例如SSD检测和更好的文件系统信息对于根文件系统.
+ *
  */
 class ESFileStore extends FileStore {
     /** Underlying filestore */
     final FileStore in;
     /** Cached result of Lucene's {@code IOUtils.spins} on path. */
     final Boolean spins;
-    
+
     @SuppressForbidden(reason = "tries to determine if disk is spinning")
-    // TODO: move PathUtils to be package-private here instead of 
+    // TODO: move PathUtils to be package-private here instead of
     // public+forbidden api!
     ESFileStore(FileStore in) {
         this.in = in;
@@ -63,7 +66,7 @@ class ESFileStore extends FileStore {
         }
         this.spins = spins;
     }
-    
+
     // these are hacks that are not guaranteed
     private static String getMountPointLinux(FileStore store) {
         String desc = store.toString();
@@ -74,16 +77,20 @@ class ESFileStore extends FileStore {
             return desc;
         }
     }
-    
-    /** 
-     * Files.getFileStore(Path) useless here!  Don't complain, just try it yourself. 
+
+    /**
+     * Files.getFileStore(Path) useless here!  Don't complain, just try it yourself.
      */
     @SuppressForbidden(reason = "works around the bugs")
-    static FileStore getMatchingFileStore(Path path, FileStore fileStores[]) throws IOException {       
+    static FileStore getMatchingFileStore(Path path, FileStore fileStores[]) throws IOException {
+
+        /**
+         * WINDOWS系统获取文件路径
+         */
         if (Constants.WINDOWS) {
             return getFileStoreWindows(path, fileStores);
         }
-        
+
         final FileStore store;
         try {
             store = Files.getFileStore(path);
@@ -117,24 +124,26 @@ class ESFileStore extends FileStore {
                 return sameMountPoint;
             } else {
                 // fall back to crappy one we got from Files.getFileStore
-                return store;    
+                return store;
             }
         } catch (Exception e) {
             // ignore
         }
 
         // fall back to crappy one we got from Files.getFileStore
-        return store;    
+        return store;
     }
-    
-    /** 
+
+    /**
      * remove this code and just use getFileStore for windows on java 9
      * works around https://bugs.openjdk.java.net/browse/JDK-8034057
+     *
+     * 在JAVA 9 的时候会移除这段代码,使用getFileStore
      */
     @SuppressForbidden(reason = "works around https://bugs.openjdk.java.net/browse/JDK-8034057")
     static FileStore getFileStoreWindows(Path path, FileStore fileStores[]) throws IOException {
         assert Constants.WINDOWS;
-        
+
         try {
             return Files.getFileStore(path);
         } catch (FileSystemException possibleBug) {
@@ -152,11 +161,11 @@ class ESFileStore extends FileStore {
                     throw new RuntimeException("root isn't a drive letter: " + root);
                 }
             } catch (Throwable checkFailed) {
-                // something went wrong, 
+                // something went wrong,
                 possibleBug.addSuppressed(checkFailed);
                 throw possibleBug;
             }
-            
+
             // we have a drive letter: the hack begins!!!!!!!!
             try {
                 // we have no choice but to parse toString of all stores and find the matching drive letter

@@ -52,6 +52,9 @@ public class CliToolConfig {
         this.cmds = cmdsBuilder.build();
     }
 
+    /**
+     * 判断是否为单命令模式
+     */
     public boolean isSingle() {
         return cmds.size() == 1;
     }
@@ -77,6 +80,10 @@ public class CliToolConfig {
         return cmds.get(name);
     }
 
+    /**
+     * 打印帮助类
+     * @param terminal
+     */
     public void printUsage(Terminal terminal) {
         helpPrinter.print(this, terminal);
     }

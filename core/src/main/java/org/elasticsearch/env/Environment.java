@@ -98,6 +98,11 @@ public class Environment {
         fileStores = allStores.toArray(new ESFileStore[allStores.size()]);
     }
 
+
+    /**
+     * 获取各种环境变量
+     * @param settings
+     */
     public Environment(Settings settings) {
         this.settings = settings;
         final Path homeFile;

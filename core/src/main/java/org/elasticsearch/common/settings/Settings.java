@@ -78,7 +78,11 @@ public final class Settings implements ToXContent {
         return settingsRequireUnits;
     }
 
+    /**
+     * 不可变Map
+     */
     private ImmutableMap<String, String> settings;
+
     private final ImmutableMap<String, String> forcedUnderscoreSettings;
 
     Settings(Map<String, String> settings) {
@@ -124,6 +128,14 @@ public final class Settings implements ToXContent {
         return map;
     }
 
+
+    /**
+     *
+     * @param map
+     * @param prefix
+     * @param setting
+     * @param value
+     */
     private void processSetting(Map<String, Object> map, String prefix, String setting, String value) {
         int prefixLength = setting.indexOf('.');
         if (prefixLength == -1) {
@@ -399,6 +411,8 @@ public final class Settings implements ToXContent {
     /**
      * Returns the setting value (as boolean) associated with the setting key. If it does not exists,
      * returns the default value provided.
+     *
+     * 返回key对应的属性,如果不存在,返回默认值
      */
     public Boolean getAsBoolean(String setting, Boolean defaultValue) {
         return Booleans.parseBoolean(get(setting), defaultValue);
@@ -739,6 +753,10 @@ public final class Settings implements ToXContent {
      * A builder allowing to put different settings and then {@link #build()} an immutable
      * settings implementation. Use {@link Settings#settingsBuilder()} in order to
      * construct it.
+     *
+     * 构造器允许防止不同的配置,然后构建一个不可变的配置.
+     * 使用settingsBuilder去构造它.
+     *
      */
     public static class Builder {
 
@@ -1137,6 +1155,9 @@ public final class Settings implements ToXContent {
          * First, tries to resolve it against a System property ({@link System#getProperty(String)}), next,
          * tries and resolve it against an environment variable ({@link System#getenv(String)}), and last, tries
          * and replace it with another setting already set on this builder.
+         *
+         *
+         *
          */
         public Builder replacePropertyPlaceholders() {
             PropertyPlaceholder propertyPlaceholder = new PropertyPlaceholder("${", "}", false);
